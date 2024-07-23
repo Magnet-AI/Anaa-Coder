@@ -1,0 +1,140 @@
+[
+    {
+        "task_id": "AnnaCoder/1",
+        "prompt": "import pandas as pd\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\n\n\ndef create_dataset(data_path: str) -> pd.DataFrame:\n    \"\"\" Load a dataset from a given path and return a pandas DataFrame.\n    Args:\n        data_path (str): Path to the dataset file.\n    Returns:\n        pd.DataFrame: Loaded dataset.\n    \"\"\"\n",
+        "canonical_solution": "    data = pd.read_csv(data_path)\n    return data\n",
+        "test": "\n\nMETADATA = {\n    'author': 'example',\n    'dataset': 'example'\n}\n\n\ndef check(candidate):\n    data = candidate('data.csv')\n    assert isinstance(data, pd.DataFrame)\n",
+        "entry_point": "create_dataset",
+        "completion_list": [
+            "    data = pd.read_csv(data_path)\n    return data\n",
+            "    return pd.read_csv(data_path)\n",
+            "    df = pd.read_csv(data_path)\n    return df\n",
+            "    data_frame = pd.read_csv(data_path)\n    return data_frame\n",
+            "    return pd.read_csv(data_path)\n"
+        ],
+        "test_case_list": [
+            "    assert create_dataset('data.csv').shape[0] > 0\n",
+            "    assert isinstance(create_dataset('data.csv'), pd.DataFrame)\n",
+            "    df = create_dataset('data.csv')\n    assert df.shape[0] > 0\n    assert df.shape[1] > 0\n",
+            "    df = create_dataset('data.csv')\n    assert isinstance(df, pd.DataFrame)\n",
+            "    df = create_dataset('data.csv')\n    assert not df.empty\n"
+        ],
+        "full_code": "import pandas as pd\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\n\n\ndef create_dataset(data_path: str) -> pd.DataFrame:\n    \"\"\" Load a dataset from a given path and return a pandas DataFrame.\n    Args:\n        data_path (str): Path to the dataset file.\n    Returns:\n        pd.DataFrame: Loaded dataset.\n    \"\"\"\n    data = pd.read_csv(data_path)\n    return data\n\n\nassert create_dataset('data.csv').shape[0] > 0\nassert isinstance(create_dataset('data.csv'), pd.DataFrame)\n",
+        "completion": "    data = pd.read_csv(data_path)\n    return data\n"
+    },
+    {
+        "task_id": "AnnaCoder/2",
+        "prompt": "import torch\nfrom torch import nn\n\n\ndef create_simple_nn(input_dim: int, output_dim: int) -> nn.Module:\n    \"\"\" Create a simple neural network with one hidden layer.\n    Args:\n        input_dim (int): Dimension of the input features.\n        output_dim (int): Dimension of the output features.\n    Returns:\n        nn.Module: Simple neural network model.\n    \"\"\"\n",
+        "canonical_solution": "    model = nn.Sequential(\n        nn.Linear(input_dim, 128),\n        nn.ReLU(),\n        nn.Linear(128, output_dim)\n    )\n    return model\n",
+        "test": "\n\nMETADATA = {\n    'author': 'example',\n    'dataset': 'example'\n}\n\n\ndef check(candidate):\n    model = candidate(10, 2)\n    assert isinstance(model, nn.Module)\n    assert len(list(model.parameters())) > 0\n",
+        "entry_point": "create_simple_nn",
+        "completion_list": [
+            "    model = nn.Sequential(\n        nn.Linear(input_dim, 128),\n        nn.ReLU(),\n        nn.Linear(128, output_dim)\n    )\n    return model\n",
+            "    return nn.Sequential(\n        nn.Linear(input_dim, 128),\n        nn.ReLU(),\n        nn.Linear(128, output_dim)\n    )\n",
+            "    model = nn.Sequential(\n        nn.Linear(input_dim, 64),\n        nn.ReLU(),\n        nn.Linear(64, output_dim)\n    )\n    return model\n",
+            "    model = nn.Sequential(\n        nn.Linear(input_dim, 128),\n        nn.ReLU(),\n        nn.Linear(128, output_dim)\n    )\n    return model\n",
+            "    return nn.Sequential(\n        nn.Linear(input_dim, 128),\n        nn.ReLU(),\n        nn.Linear(128, output_dim)\n    )\n"
+        ],
+        "test_case_list": [
+            "    assert isinstance(create_simple_nn(10, 2), nn.Module)\n",
+            "    model = create_simple_nn(10, 2)\n    assert len(list(model.parameters())) > 0\n",
+            "    model = create_simple_nn(10, 2)\n    assert isinstance(model, nn.Sequential)\n    assert len(list(model.parameters())) > 0\n",
+            "    model = create_simple_nn(10, 2)\n    assert isinstance(model, nn.Module)\n",
+            "    model = create_simple_nn(10, 2)\n    assert isinstance(model, nn.Sequential)\n"
+        ],
+        "full_code": "import torch\nfrom torch import nn\n\n\ndef create_simple_nn(input_dim: int, output_dim: int) -> nn.Module:\n    \"\"\" Create a simple neural network with one hidden layer.\n    Args:\n        input_dim (int): Dimension of the input features.\n        output_dim (int): Dimension of the output features.\n    Returns:\n        nn.Module: Simple neural network model.\n    \"\"\"\n    model = nn.Sequential(\n        nn.Linear(input_dim, 128),\n        nn.ReLU(),\n        nn.Linear(128, output_dim)\n    )\n    return model\n\n\nmodel = create_simple_nn(10, 2)\nassert isinstance(model, nn.Module)\nassert len(list(model.parameters())) > 0\n",
+        "completion": "    model = nn.Sequential(\n        nn.Linear(input_dim, 128),\n        nn.ReLU(),\n        nn.Linear(128, output_dim)\n    )\n    return model\n"
+    },
+    {
+        "task_id": "AnnaCoder/3",
+        "prompt": "import torch\nfrom torch import nn\nfrom torch.nn import functional as F\n\n\ndef forward_pass(model: nn.Module, x: torch.Tensor) -> torch.Tensor:\n    \"\"\" Perform a forward pass through the model.\n    Args:\n        model (nn.Module): The neural network model.\n        x (torch.Tensor): Input tensor.\n    Returns:\n        torch.Tensor: Output tensor.\n    \"\"\"\n",
+        "canonical_solution": "    return model(x)\n",
+        "test": "\n\nMETADATA = {\n    'author': 'example',\n    'dataset': 'example'\n}\n\n\ndef check(candidate):\n    model = nn.Sequential(\n        nn.Linear(10, 5),\n        nn.ReLU(),\n        nn.Linear(5, 2)\n    )\n    x = torch.randn(1, 10)\n    output = candidate(model, x)\n    assert output.shape == (1, 2)\n",
+        "entry_point": "forward_pass",
+        "completion_list": [
+            "    return model(x)\n",
+            "    output = model(x)\n    return output\n",
+            "    return model.forward(x)\n",
+            "    return model(x)\n",
+            "    output = model(x)\n    return output\n"
+        ],
+        "test_case_list": [
+            "    model = nn.Sequential(\n        nn.Linear(10, 5),\n        nn.ReLU(),\n        nn.Linear(5, 2)\n    )\n    x = torch.randn(1, 10)\n    assert forward_pass(model, x).shape == (1, 2)\n",
+            "    model = nn.Sequential(\n        nn.Linear(10, 5),\n        nn.ReLU(),\n        nn.Linear(5, 2)\n    )\n    x = torch.randn(1, 10)\n    output = forward_pass(model, x)\n    assert output.shape == (1, 2)\n",
+            "    model = nn.Sequential(\n        nn.Linear(10, 5),\n        nn.ReLU(),\n        nn.Linear(5, 2)\n    )\n    x = torch.randn(1, 10)\n    output = forward_pass(model, x)\n    assert output.shape == (1, 2)\n",
+            "    model = nn.Sequential(\n        nn.Linear(10, 5),\n        nn.ReLU(),\n        nn.Linear(5, 2)\n    )\n    x = torch.randn(1, 10)\n    assert forward_pass(model, x).shape == (1, 2)\n",
+            "    model = nn.Sequential(\n        nn.Linear(10, 5),\n        nn.ReLU(),\n        nn.Linear(5, 2)\n    )\n    x = torch.randn(1, 10)\n    output = forward_pass(model, x)\n    assert output.shape == (1, 2)\n"
+        ],
+        "full_code": "import torch\nfrom torch import nn\nfrom torch.nn import functional as F\n\n\ndef forward_pass(model: nn.Module, x: torch.Tensor) -> torch.Tensor:\n    \"\"\" Perform a forward pass through the model.\n    Args:\n        model (nn.Module): The neural network model.\n        x (torch.Tensor): Input tensor.\n    Returns:\n        torch.Tensor: Output tensor.\n    \"\"\"\n    return model(x)\n\n\nmodel = nn.Sequential(\n    nn.Linear(10, 5),\n    nn.ReLU(),\n    nn.Linear(5, 2)\n)\nx = torch.randn(1, 10)\noutput = forward_pass(model, x)\nassert output.shape == (1, 2)\n",
+        "completion": "    return model(x)\n"
+    },
+    {
+        "task_id": "AnnaCoder/4",
+        "prompt": "import torch\nfrom torch import nn\n\n\ndef init_weights(layer: nn.Module) -> None:\n    \"\"\" Initialize the weights of the given layer.\n    Args:\n        layer (nn.Module): A neural network layer.\n    \"\"\"\n",
+        "canonical_solution": "    if isinstance(layer, nn.Linear):\n        nn.init.xavier_uniform_(layer.weight)\n        if layer.bias is not None:\n            nn.init.constant_(layer.bias, 0)\n",
+        "test": "\n\nMETADATA = {\n    'author': 'example',\n    'dataset': 'example'\n}\n\n\ndef check(candidate):\n    layer = nn.Linear(10, 5)\n    candidate(layer)\n    assert torch.all(layer.weight != 0)\n    if layer.bias is not None:\n        assert torch.all(layer.bias == 0)\n",
+        "entry_point": "init_weights",
+        "completion_list": [
+            "    if isinstance(layer, nn.Linear):\n        nn.init.xavier_uniform_(layer.weight)\n        if layer.bias is not None:\n            nn.init.constant_(layer.bias, 0)\n",
+            "    if isinstance(layer, nn.Linear):\n        nn.init.xavier_uniform_(layer.weight)\n        if layer.bias is not None:\n            nn.init.constant_(layer.bias, 0)\n",
+            "    if isinstance(layer, nn.Linear):\n        nn.init.xavier_uniform_(layer.weight)\n        if layer.bias is not None:\n            nn.init.constant_(layer.bias, 0)\n",
+            "    if isinstance(layer, nn.Linear):\n        nn.init.xavier_uniform_(layer.weight)\n        if layer.bias is not None:\n            nn.init.constant_(layer.bias, 0)\n",
+            "    if isinstance(layer, nn.Linear):\n        nn.init.xavier_uniform_(layer.weight)\n        if layer.bias is not None:\n            nn.init.constant_(layer.bias, 0)\n"
+        ],
+        "test_case_list": [
+            "    layer = nn.Linear(10, 5)\n    init_weights(layer)\n    assert torch.all(layer.weight != 0)\n    if layer.bias is not None:\n        assert torch.all(layer.bias == 0)\n",
+            "    layer = nn.Linear(10, 5)\n    init_weights(layer)\n    assert torch.all(layer.weight != 0)\n    if layer.bias is not None:\n        assert torch.all(layer.bias == 0)\n",
+            "    layer = nn.Linear(10, 5)\n    init_weights(layer)\n    assert torch.all(layer.weight != 0)\n    if layer.bias is not None:\n        assert torch.all(layer.bias == 0)\n",
+            "    layer = nn.Linear(10, 5)\n    init_weights(layer)\n    assert torch.all(layer.weight != 0)\n    if layer.bias is not None:\n        assert torch.all(layer.bias == 0)\n",
+            "    layer = nn.Linear(10, 5)\n    init_weights(layer)\n    assert torch.all(layer.weight != 0)\n    if layer.bias is not None:\n        assert torch.all(layer.bias == 0)\n"
+        ],
+        "full_code": "import torch\nfrom torch import nn\n\n\ndef init_weights(layer: nn.Module) -> None:\n    \"\"\" Initialize the weights of the given layer.\n    Args:\n        layer (nn.Module): A neural network layer.\n    \"\"\"\n    if isinstance(layer, nn.Linear):\n        nn.init.xavier_uniform_(layer.weight)\n        if layer.bias is not None:\n            nn.init.constant_(layer.bias, 0)\n\n\nlayer = nn.Linear(10, 5)\ninit_weights(layer)\nassert torch.all(layer.weight != 0)\nif layer.bias is not None:\n    assert torch.all(layer.bias == 0)\n",
+        "completion": "    if isinstance(layer, nn.Linear):\n        nn.init.xavier_uniform_(layer.weight)\n        if layer.bias is not None:\n            nn.init.constant_(layer.bias, 0)\n"
+    },
+    {
+        "task_id": "AnnaCoder/5",
+        "prompt": "import torch\nfrom torch import nn\n\n\ndef create_conv_layer(in_channels: int, out_channels: int, kernel_size: int) -> nn.Module:\n    \"\"\" Create a convolutional layer.\n    Args:\n        in_channels (int): Number of input channels.\n        out_channels (int): Number of output channels.\n        kernel_size (int): Size of the convolution kernel.\n    Returns:\n        nn.Module: Convolutional layer.\n    \"\"\"\n",
+        "canonical_solution": "    return nn.Conv2d(in_channels, out_channels, kernel_size)\n",
+        "test": "\n\nMETADATA = {\n    'author': 'example',\n    'dataset': 'example'\n}\n\n\ndef check(candidate):\n    layer = candidate(3, 16, 3)\n    assert isinstance(layer, nn.Conv2d)\n    assert layer.in_channels == 3\n    assert layer.out_channels == 16\n    assert layer.kernel_size == (3, 3)\n",
+        "entry_point": "create_conv_layer",
+        "completion_list": [
+            "    return nn.Conv2d(in_channels, out_channels, kernel_size)\n",
+            "    layer = nn.Conv2d(in_channels, out_channels, kernel_size)\n    return layer\n",
+            "    return nn.Conv2d(in_channels, out_channels, kernel_size)\n",
+            "    layer = nn.Conv2d(in_channels, out_channels, kernel_size)\n    return layer\n",
+            "    return nn.Conv2d(in_channels, out_channels, kernel_size)\n"
+        ],
+        "test_case_list": [
+            "    layer = create_conv_layer(3, 16, 3)\n    assert isinstance(layer, nn.Conv2d)\n",
+            "    layer = create_conv_layer(3, 16, 3)\n    assert isinstance(layer, nn.Conv2d)\n",
+            "    layer = create_conv_layer(3, 16, 3)\n    assert isinstance(layer, nn.Conv2d)\n",
+            "    layer = create_conv_layer(3, 16, 3)\n    assert isinstance(layer, nn.Conv2d)\n",
+            "    layer = create_conv_layer(3, 16, 3)\n    assert isinstance(layer, nn.Conv2d)\n"
+        ],
+        "full_code": "import torch\nfrom torch import nn\n\n\ndef create_conv_layer(in_channels: int, out_channels: int, kernel_size: int) -> nn.Module:\n    \"\"\" Create a convolutional layer.\n    Args:\n        in_channels (int): Number of input channels.\n        out_channels (int): Number of output channels.\n        kernel_size (int): Size of the convolution kernel.\n    Returns:\n        nn.Module: Convolutional layer.\n    \"\"\"\n    return nn.Conv2d(in_channels, out_channels, kernel_size)\n\n\nlayer = create_conv_layer(3, 16, 3)\nassert isinstance(layer, nn.Conv2d)\nassert layer.in_channels == 3\nassert layer.out_channels == 16\nassert layer.kernel_size == (3, 3)\n",
+        "completion": "    return nn.Conv2d(in_channels, out_channels, kernel_size)\n"
+    },
+    {
+        "task_id": "AnnaCoder/6",
+        "prompt": "import torch\nfrom torch import nn\n\n\ndef create_lstm_layer(input_size: int, hidden_size: int, num_layers: int) -> nn.Module:\n    \"\"\" Create an LSTM layer.\n    Args:\n        input_size (int): The number of expected features in the input.\n        hidden_size (int): The number of features in the hidden state.\n        num_layers (int): Number of recurrent layers.\n    Returns:\n        nn.Module: LSTM layer.\n    \"\"\"\n",
+        "canonical_solution": "    return nn.LSTM(input_size, hidden_size, num_layers)\n",
+        "test": "\n\nMETADATA = {\n    'author': 'example',\n    'dataset': 'example'\n}\n\n\ndef check(candidate):\n    layer = candidate(10, 20, 2)\n    assert isinstance(layer, nn.LSTM)\n    assert layer.input_size == 10\n    assert layer.hidden_size == 20\n    assert layer.num_layers == 2\n",
+        "entry_point": "create_lstm_layer",
+        "completion_list": [
+            "    return nn.LSTM(input_size, hidden_size, num_layers)\n",
+            "    return nn.LSTM(input_size, hidden_size, num_layers)\n",
+            "    return nn.LSTM(input_size, hidden_size, num_layers)\n",
+            "    return nn.LSTM(input_size, hidden_size, num_layers)\n",
+            "    return nn.LSTM(input_size, hidden_size, num_layers)\n"
+        ],
+        "test_case_list": [
+            "    layer = create_lstm_layer(10, 20, 2)\n    assert isinstance(layer, nn.LSTM)\n    assert layer.input_size == 10\n    assert layer.hidden_size == 20\n    assert layer.num_layers == 2\n",
+            "    layer = create_lstm_layer(10, 20, 2)\n    assert isinstance(layer, nn.LSTM)\n    assert layer.input_size == 10\n    assert layer.hidden_size == 20\n    assert layer.num_layers == 2\n",
+            "    layer = create_lstm_layer(10, 20, 2)\n    assert isinstance(layer, nn.LSTM)\n    assert layer.input_size == 10\n    assert layer.hidden_size == 20\n    assert layer.num_layers == 2\n",
+            "    layer = create_lstm_layer(10, 20, 2)\n    assert isinstance(layer, nn.LSTM)\n    assert layer.input_size == 10\n    assert layer.hidden_size == 20\n    assert layer.num_layers == 2\n",
+            "    layer = create_lstm_layer(10, 20, 2)\n    assert isinstance(layer, nn.LSTM)\n    assert layer.input_size == 10\n    assert layer.hidden_size == 20\n    assert layer.num_layers == 2\n"
+        ],
+        "full_code": "import torch\nfrom torch import nn\n\n\ndef create_lstm_layer(input_size: int, hidden_size: int, num_layers: int) -> nn.Module:\n    \"\"\" Create an LSTM layer.\n    Args:\n        input_size (int): The number of expected features in the input.\n        hidden_size (int): The number of features in the hidden state.\n        num_layers (int): Number of recurrent layers.\n    Returns:\n        nn.Module: LSTM layer.\n    \"\"\"\n    return nn.LSTM(input_size, hidden_size, num_layers)\n\n\nlayer = create_lstm_layer(10, 20, 2)\nassert isinstance(layer, nn.LSTM)\nassert layer.input_size == 10\nassert layer.hidden_size == 20\nassert layer.num_layers == 2\n",
+        "completion": "    return nn.LSTM(input_size, hidden_size, num_layers)\n"
+    }
+]
