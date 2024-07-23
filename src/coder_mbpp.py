@@ -122,14 +122,14 @@ def call_completion(dataset, model,lg):
 
 
 if __name__ == "__main__":
-    model_list = ["gpt-3.5-turbo-1106"]
+    model_list = ["gpt-4-turbo-1106"]
     language = ["py"]
     for model in model_list:
         for lg in language:
             from datasets import load_dataset
             dataset = load_dataset("mbpp",name="sanitized",split="test")
             dataset = [entry for entry in dataset]
-            with open(path, "r") as f:
+            with open("datasets/zero_shot_gpt-4-turbo_0_mbpp.json", "r") as f:
                 dataset = json.load(f)
             with ThreadPoolExecutor(max_workers=20) as executor:
                 future_to_entry = {executor.submit(fetch_completion, copy.deepcopy(entry), model, lg): entry for entry in tqdm(dataset)}
@@ -142,5 +142,5 @@ if __name__ == "__main__":
                     except Exception as e:
                         print(repr(e))
 
-            with open(f"./dataset/{model}_mbpp.json", "w") as f:
+            with open(f"./datasets/{model}.json", "w") as f:
                 json.dump(dataset, f, indent=4)
