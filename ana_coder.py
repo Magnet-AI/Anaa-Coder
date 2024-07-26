@@ -462,11 +462,11 @@ if __name__ == "__main__":
 
     requirements_str = "\n".join([f"{key}: {value}" for key, value in requirements.items()])
 
-    api_key_creator = "API-KEY"
+    api_key_creator = "place"
     llm_creator = LLM(api_key_creator)
     code_creator = CodeCreatorAgent(language='Python', llm=llm_creator)
 
-    api_key_tester = "API-KEY"
+    api_key_tester = ""
     llm_tester = LLM(api_key_tester)
     code_tester = CodeTestGeneratorAgent(language='Python', llm=llm_tester)
 
