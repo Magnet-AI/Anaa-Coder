@@ -232,19 +232,19 @@ if __name__ == "__main__":
     
     query = "Create a function to calculate the factorial of a number"
 
-    api_key_planner = "sk-proj-uhiNgJeOKQFWE5IGCnlPT3BlbkFJxP4d8rZ9y44M7az4Hj8q"
+    api_key_planner = "API_KEY"
     llm_planner = LLM(api_key_planner)
     code_planner = PlannerAgent(llm_planner)
 
-    api_key_creator = "sk-proj-uhiNgJeOKQFWE5IGCnlPT3BlbkFJxP4d8rZ9y44M7az4Hj8q"
+    api_key_creator = "API_KEY"
     llm_creator = LLM(api_key_creator)
     code_creator = CodeCreatorAgent(language='Python', llm=llm_creator)
 
-    api_key_tester = "sk-proj-uhiNgJeOKQFWE5IGCnlPT3BlbkFJxP4d8rZ9y44M7az4Hj8q"
+    api_key_tester = "API_KEY"
     llm_tester = LLM(api_key_tester)
     code_tester = CodeTestGeneratorAgent(language='Python', llm=llm_tester)
 
-    code_executor = CodeExecutorAgent("e2b_37bb091311f835a61dd1d96ed32c9d85c9511964")
+    code_executor = CodeExecutorAgent("API_KEY")
 
     requirements = code_planner.plan(query)
     
