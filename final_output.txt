@@ -1,0 +1,143 @@
+Generated Code:
+import subprocess
+import sys
+
+def install_packages():
+    def install(package):
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+    # Install necessary packages
+    install('numpy')
+    install('pandas')
+    install('scikit-learn')
+    install('h5py')  # For handling large genomic datasets in HDF5 format
+
+# Invoke the installation function to install required packages
+install_packages()
+
+import numpy as np
+import pandas as pd
+import h5py
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder, MinMaxScaler
+
+class GenomicDataProcessor:
+    def __init__(self, data_path, sequence_length, normalization_method='min-max', train_split=0.7, test_split=0.15, validation_split=0.15):
+        self.data_path = data_path
+        self.sequence_length = sequence_length
+        self.normalization_method = normalization_method
+        self.train_split = train_split
+        self.test_split = test_split
+        self.validation_split = validation_split
+    
+    def load_data(self, file_type):
+        if file_type == 'csv':
+            return pd.read_csv(self.data_path)
+        elif file_type == 'hdf5':
+            with h5py.File(self.data_path, 'r') as f:
+                return np.array(f['genomic_data'])
+        else:
+            raise ValueError("Unsupported file type provided.")
+    
+    def preprocess_data(self, raw_data):
+        # One-hot encoding for DNA sequences (A, C, G, T)
+        onehot_encoder = OneHotEncoder(sparse=False, categories=[['A', 'C', 'G', 'T']])
+        processed_data = []
+        
+        for sequence in raw_data:
+            # Pad sequences to ensure equal length
+            sequence = sequence.ljust(self.sequence_length, 'N')
+            encoded_seq = onehot_encoder.fit_transform(np.array(list(sequence)).reshape(-1, 1))
+            processed_data.append(encoded_seq)
+        
+        processed_data = np.array(processed_data)
+        
+        # Apply normalization if specified
+        if self.normalization_method == 'min-max':
+            scaler = MinMaxScaler()
+            processed_data = scaler.fit_transform(processed_data.reshape(-1, processed_data.shape[-1])).reshape(processed_data.shape)
+        
+        return processed_data
+
+    def split_data(self, processed_data):
+        # Split data into training, validation, and test sets
+        train_data, temp_data = train_test_split(processed_data, train_size=self.train_split)
+        val_data, test_data = train_test_split(temp_data, test_size=self.test_split / (self.test_split + self.validation_split))
+        return train_data, test_data, val_data
+
+# Example usage with dummy values
+processor = GenomicDataProcessor(data_path='path/to/genomic_data.csv', sequence_length=1000)
+try:
+    raw_data = processor.load_data(file_type='csv')
+    processed_data = processor.preprocess_data(raw_data)
+    train_data, test_data, val_data = processor.split_data(processed_data)
+except Exception as e:
+    print(f"Error while processing data: {e}")
+
+Generated Tests:
+import unittest
+from unittest.mock import patch, mock_open
+from io import StringIO
+import numpy as np
+
+class TestGenomicDataProcessor(unittest.TestCase):
+    def setUp(self):
+        # Assuming the class GenomicDataProcessor and its methods are defined somewhere
+        self.processor = GenomicDataProcessor()
+        
+    @patch('builtins.open', new_callable=mock_open, read_data='>sequence1\nATCG\n>sequence2\nGGCT')
+    def test_load_data_with_valid_path(self, mock_file):
+        # Simulate loading data from a file
+        data = self.processor.load_data('path/to/valid_genomic_data.fasta', 'fasta')
+        self.assertIn('ATCG', data)
+        self.assertIn('GGCT', data)
+
+    @patch('os.path.exists', return_value=False)
+    def test_load_data_with_invalid_path(self, mock_exists):
+        # Testing loading from a non-existent path
+        with self.assertRaises(FileNotFoundError):
+            self.processor.load_data('path/to/nonexistent_file.fasta', 'fasta')
+
+    def test_preprocess_data_numerical_encoding(self):
+        # Simulate preprocessing of raw genomic data
+        raw_data = ['ATCG', 'GGCT']
+        processed_data = self.processor.preprocess_data(raw_data, 4, 'numerical')
+        self.assertEqual(len(processed_data), 2)
+        self.assertTrue(np.array_equal(processed_data[0], np.array([1, 2, 3, 4])))
+
+    def test_preprocess_data_one_hot_encoding(self):
+        # Simulate preprocessing using one-hot encoding
+        raw_data = ['ATCG', 'GGCT']
+        processed_data = self.processor.preprocess_data(raw_data, 4, 'one-hot')
+        self.assertEqual(len(processed_data), 2)
+        self.assertTrue(np.array_equal(processed_data[0][0], np.array([1, 0, 0, 0])))
+
+    def test_split_data(self):
+        # Simulating data splitting
+        processed_data = np.array([np.random.rand(10, 4) for _ in range(100)])
+        train_data, test_data, validation_data = self.processor.split_data(processed_data, 0.7, 0.2, 0.1)
+        self.assertEqual(len(train_data), 70)
+        self.assertEqual(len(test_data), 20)
+        self.assertEqual(len(validation_data), 10)
+
+def install_packages():
+    import subprocess
+    import sys
+
+    def install(package):
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+    # Install necessary packages
+    install('numpy')
+    install('pandas')
+    install('scikit-learn')
+
+if __name__ == '__main__':
+    install_packages()
+    unittest.main()
+
+Code Result:
+Passed
+
+Tests Result:
+Passed
