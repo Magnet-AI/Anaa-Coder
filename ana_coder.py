@@ -230,21 +230,22 @@ def extract_python_code(text):
 
 if __name__ == "__main__":
     
-    query = "Create a function to calculate the factorial of a number"
+    # query = "Create a function to calculate the factorial of a number"
+    query = "Process and split genomic data. The class should include methods to load, preprocess, and split genomic data suitable for input into a neural network. It should handle various file formats and include options for different preprocessing techniques."
 
-    api_key_planner = "API_KEY"
+    api_key_planner = "sk-proj-ybl8EvWMQuulGwU8X5RzT3BlbkFJXfFHNPnLUvHJrtbvclzU"
     llm_planner = LLM(api_key_planner)
     code_planner = PlannerAgent(llm_planner)
 
-    api_key_creator = "API_KEY"
+    api_key_creator = "sk-proj-ybl8EvWMQuulGwU8X5RzT3BlbkFJXfFHNPnLUvHJrtbvclzU"
     llm_creator = LLM(api_key_creator)
     code_creator = CodeCreatorAgent(language='Python', llm=llm_creator)
 
-    api_key_tester = "API_KEY"
+    api_key_tester = "sk-proj-ybl8EvWMQuulGwU8X5RzT3BlbkFJXfFHNPnLUvHJrtbvclzU"
     llm_tester = LLM(api_key_tester)
     code_tester = CodeTestGeneratorAgent(language='Python', llm=llm_tester)
 
-    code_executor = CodeExecutorAgent("API_KEY")
+    code_executor = CodeExecutorAgent("e2b_37bb091311f835a61dd1d96ed32c9d85c9511964")
 
     requirements = code_planner.plan(query)
     

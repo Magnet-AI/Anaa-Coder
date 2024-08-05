@@ -1,75 +1,186 @@
 Generated Code:
-class MathUtils:
-    @staticmethod
-    def calculate_factorial(n):
-        """Compute the factorial of a non-negative integer n."""
-        if n < 0:
-            raise ValueError("Factorial is not defined for negative numbers")
-        if n in (0, 1):
-            return 1
-        result = 1
-        for i in range(2, n + 1):
-            result *= i
-        return result
+import numpy as np
+import pandas as pd
+from Bio import SeqIO
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+import logging
 
-# Example of using the MathUtils class
-try:
-    result = MathUtils.calculate_factorial(5)
-    print("The factorial of 5 is", result)
-except ValueError as e:
-    print(e)
+class GenomicDataProcessor:
+    def __init__(self):
+        self.logger = logging.getLogger(self.__class__.__name__)
+        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        
+    def load_data(self, file_path, file_format=None):
+        """
+        Loads genomic data from a file in specified formats.
+        """
+        if file_format is None:
+            file_format = self._infer_file_format(file_path)
+            
+        data = []
+        try:
+            for record in SeqIO.parse(file_path, file_format):
+                data.append(str(record.seq))
+            self.logger.info(f"Data loaded successfully from {file_path}.")
+        except Exception as e:
+            self.logger.error(f"Failed to load data from {file_path}: {e}")
+            return None
+            
+        return data
+        
+    def preprocess_data(self, data, normalization='minmax', sequence_length=1000, encoding_type='one-hot'):
+        """
+        Preprocess genomic data for neural network training.
+        """
+        processed_data = []
+        
+        for sequence in data:
+            # Encoding the sequence
+            if encoding_type == 'one-hot':
+                encoded_seq = self._encode_one_hot(sequence, sequence_length)
+            elif encoding_data == 'integer':
+                encoded_seq = self._encode_integer(sequence, sequence_length)
+            else:
+                self.logger.error("Unsupported encoding type")
+                return None
+            
+            # Normalizing the sequence
+            if normalization == 'minmax':
+                scaler = MinMaxScaler()
+            elif normalization == 'standard':
+                scaler = StandardScaler()
+            else:
+                self.logger.error("Unsupported normalization type")
+                return None
+                
+            processed_sequence = scaler.fit_transform(encoded_seq.reshape(-1, 1)).reshape(-1)
+            processed_data.append(processed_sequence)
+            
+        return np.array(processed_data)
+    
+    def split_data(self, processed_data, split_ratio=(0.7, 0.15, 0.15)):
+        """
+        Splits the processed data into training, validation, and test sets.
+        """
+        train_val_data, test_data = train_test_split(processed_data, test_size=split_ratio[2])
+        train_data, val_data = train_test_split(train_val_data, test_size=split_ratio[1] / (split_ratio[0] + split_ratio[1]))
+        
+        return train_data, val_data, test_data
+    
+    def _infer_file_format(self, file_path):
+        """
+        Infers the file format from the file extension.
+        """
+        if file_path.endswith(".fasta") or file_path.endswith(".fa"):
+            return "fasta"
+        elif file_external.endswith(".fastq"):
+            return "fastq"
+        elif file_external.endswith(".vcf"):
+            return "vcf"
+        else:
+            self.logger.warning("File format not recognized, defaulting to FASTA.")
+            return "fasta"
+
+    def _encode_one_hot(self, sequence, max_len):
+        """
+        Encodes a DNA sequence into one-hot encoding format.
+        """
+        base_dict = {'A': [1, 0, 0, 0], 'C': [0, 1, 0, 0], 'G': [0, 0, 1, 0], 'T': [0, 0, 0, 1], 'N': [0, 0, 0, 0]}
+        one_hot_encoded = [base_dict.get(base, [0, 0, 0, 0]) for base in sequence]
+        padded_sequence = one_hot_encoded[:max_len] + [[0, 0, 0, 0]] * (max_len - len(one_hot_encoded))
+        return np.array(padded_sequence)
+    
+    def _encode_integer(self, sequence, max_len):
+        """
+        Encodes a DNA sequence into integer encoding format.
+        """
+        base_dict = {'A': 1, 'C': 2, 'G': 3, 'T': 4, 'N': 0}
+        integer_encoded = [base_dict.get(base, 0) for base in sequence]
+        padded_sequence = integer_encoded[:max_len] + [0] * (max_len - len(integer_encoded))
+        return np.array(padded_db)
+
+# Example usage of the class
+processor = GenomicDataProcessor()
+data = processor.load_data("example.fasta", "fasta")
+processed_data = processor.preprocess_data(data, normalization='minmax', sequence_length=1000, encoding_type='one-hot')
+train_data, val_data, test_data = processor.split_data(processed_data)
 
 Generated Tests:
 import unittest
-from math import factorial
+from unittest.mock import patch, MagicMock
+import numpy as np
+import pandas as pd
 
-class MathUtils:
-    @staticmethod
-    def calculate_factorial(n):
-        """Compute the factorial of a non-negative integer n."""
-        if n < 0:
-            raise ValueError("Factorial is not defined for negative numbers")
-        if n in (0, 1):
-            return 1
-        result = 1
-        for i in range(2, n + 1):
-            result *= i
-        return result
+# Make sure to install these dependencies in your testing environment
+%pip install numpy pandas biopython sklearn
 
-class TestMathUtils(unittest.TestCase):
-    def test_factorial_zero(self):
-        """Test factorial of 0"""
-        self.assertEqual(MathUtils.calculate_factorial(0), 1)
+# Assuming GenomicDataProcessor is correctly implemented and imported
+from your_module import GenomicDataProcessor
 
-    def test_factorial_one(self):
-        """Test factorial of 1"""
-        self.assertEqual(MathUtils.calculate_factorial(1), 1)
+class TestGenomicDataProcessor(unittest.TestCase):
 
-    def test_factorial_small_number(self):
-        """Test factorial of a small number"""
-        self.assertEqual(MathUtils.calculate_factorial(5), 120)
+    def test_load_data_fasta_success(self):
+        # Assume proper implementation of loading FASTA files
+        processor = GenomicDataProcessor()
+        fasta_path = "path/to/genomic/data.fasta"
+        with patch('Biopython.read_fasta', return_value={"header": "sequence data"}):
+            data = processor.load_data(fasta_path, "FASTA")
+            self.assertIsInstance(data, dict)
+            self.assertIn("header", data)
 
-    def test_factorial_large_number(self):
-        """Test factorial of a larger number to see if function correctly calculates it"""
-        expected_result = factorial(20)  # Using math.factorial as reference for correctness
-        self.assertEqual(MathUtils.calculate_factorial(20), expected_result)
-    
-    def test_factorial_negative(self):
-        """Test if ValueError is raised for negative inputs"""
+    def test_load_data_auto_detect_format(self):
+        # Test format auto-detection
+        processor = GenomicDataProcessor()
+        fastq_path = "path/to/genomic/data.fastq"
+        with patch('Biopython.read_fastq', return_value=["sequence data"]):
+            data = processor.load_data(fastq_path, None)  # None to trigger auto-detection
+            self.assertIsInstance(data, list)
+            self.assertEqual(data[0], "sequence data")
+
+    def test_preprocess_data_normalization_and_encoding(self):
+        # Test preprocessing for normalization and encoding
+        processor = GenomicDataProcessor()
+        raw_data = {"header": "AGCT"}
+        processed_data = processor.preprocess_data(raw_data, normalization="min-max", sequence_length=10, encoding_type="one-hot")
+        self.assertTrue(all(isinstance(i, np.ndarray) for i in processed_data.values()))
+
+    def test_split_data_ratio(self):
+        # Test data splitting
+        processor = GenomicDataProcessor()
+        processed_data = {"header": np.array([0, 1, 0, 1, 0])}
+        train_data, validation_data, test_data = processor.split_data(processed_storage, split_ratio=(70, 15, 15))
+        total_len = len(processed_data['header'])
+        self.assertEqual(len(train_data['header']), round(total_len * 0.7))
+        self.assertEqual(len(validation_data['header']), round(total_length * 0.15))
+        self.assertEqual(len(test_data['header']), round(total_length * 0.15))
+
+    def test_error_handling_unsupported_format(self):
+        # Test error handling for unsupported file formats
+        processor = GenomicDataProcessor()
+        unsupported_path = "path/to/data.xyz"
         with self.assertRaises(ValueError):
-            MathUtils.calculate_factorial(-1)
+            processor.load_data(unsupported_path, "XYZ")
 
-    def test_factorial_with_reference(self):
-        """Test several factorial computations against the math.factorial function"""
-        test_cases = [10, 15, 18]  # These cases can be expanded
-        for n in test_cases:
-            with self.subTest(n=n):
-                expected_result = factorial(n)
-                self.assertEqual(MathUtils.calculate_factorial(n), expected_result)
+    def test_data_integrity_check_after_preprocessing(self):
+        # Test that data is not lost or altered unexpectedly during preprocessing
+        processor = GenomicDataProcessor()
+        raw_data = {"header": "ACTG"}  # Original Data
+        processed_data = processor.preprocess_data(raw_data.copy(), normalization='zero-mean', sequence_length=4, encoding_type='one-hot')
+        self.assertNotEqual(raw_data, processed_data)  # Ensure it was actually processed
+        self.assertNotEqual(len(processed_data['header']), len(raw_data['header']))
 
-# Running the tests
+    def test_large_file_processing_efficiency(self):
+        # Mock-up a test to simulate memory usage and timing(basic idea only since actual implementation details aren't provided here)
+        processor = GenomicDataProcessor()
+        large_file_path = "path/to/large/genomic/data.fasta"
+        with patch('Biopython.read_large_fasta', return_value=np.random.rand(1000000)):
+            with self.assertLess(timeit(lambda: processor.load_data(large_file_path, "FASTA"), number=1), 60):
+                # The processor should load and handle large files under 60 seconds as a random assertion
+                pass
+
 if __name__ == '__main__':
-    unittest.main(argv=[''], verbosity=2, exit=False)
+    unittest.main()
 
 Code Result:
 Passed
