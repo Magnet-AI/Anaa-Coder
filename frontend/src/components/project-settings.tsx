@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const ProjectSettings = () => {
   return (
-    <div className="flex flex-col w-full h-full bg-gray-200 p-4">
+    <div className="flex flex-col w-full h-full bg-gray-100 p-4">
       <h1 className="ml-3 text-2xl font-bold text-black">Twocube's Den</h1>
       <Tabs
         defaultValue="planner"
@@ -31,19 +31,19 @@ const ProjectSettings = () => {
         </TabsList>
         <TabsContent
           value="planner"
-          className="mt-4 p-4 bg-gray-100 rounded text-black h-full"
+          className="mt-4 p-4 bg-gray-300 rounded text-black h-full"
         >
           Planner
         </TabsContent>
         <TabsContent
           value="terminal"
-          className="mt-4 p-4 bg-gray-100 rounded text-black h-full"
+          className="mt-4 p-4 bg-gray-300 rounded text-black h-full"
         >
           Terminal
         </TabsContent>
         <TabsContent
           value="code"
-          className="mt-4 p-4 bg-gray-100 rounded text-black h-full"
+          className="mt-4 p-4 bg-gray-300 rounded text-black h-full"
         >
           Code
         </TabsContent>
