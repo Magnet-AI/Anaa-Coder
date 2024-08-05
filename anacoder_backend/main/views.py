@@ -405,14 +405,17 @@ def extract_python_code(text):
     else:
         return "No Python code found in the input text."
     
-
+import json
 
 @csrf_exempt
 def process_query(request):
     if request.method == 'POST':
         # Extract query from the request
         try:
-            query = request.POST.get('query')
+            body_unicode = request.body.decode('utf-8')
+            body_data = json.loads(body_unicode)
+            query = body_data.get('query')
+            print(query)
             if not query:
                 return JsonResponse({'error': 'No query provided'}, status=400)
 

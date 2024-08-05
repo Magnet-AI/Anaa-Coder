@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "main",
-    "djangorestframework"
     "corsheaders",
     "rest_framework"
 
@@ -49,11 +48,11 @@ CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
     "http://127.0.0.1:5000",
-    "http://localhost:3000/chatbot"
+    "http://localhost:3000"
 ]
 CSRF_TRUSTED_ORIGINS = ["http://localhost:3000",
                         "http://127.0.0.1:5000",
-                        "http://localhost:3000/chatbot"
+                        "http://localhost:3000"
                         ]
 
 
